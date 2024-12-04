@@ -26,9 +26,9 @@ public class Account {
     // Betala faktura
     public void payBill(String ocr, double amount) {
     }
-
-    @Override
-    public String toString() {
-        //return
-    }
+//
+//    //@Override
+//    public String toString() {
+//        //return
+//    }
 }
