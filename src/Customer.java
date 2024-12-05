@@ -1,4 +1,10 @@
+
 public class Customer extends Person {
-    //hej
+
+
+
+    public Customer(String name, int age, String address) {
+        super(name, age, address);
+    }
 
 }
