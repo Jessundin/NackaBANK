@@ -1,12 +1,12 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Costumer extends Person {
+public class Customer extends Person {
     private String name;
     private int age;
     private List<Account> accounts;
 
-    public Costumer(String name, int age) {
+    public Customer(String name, int age) {
         this.name = name;
         this.age = age;
         this.accounts = new ArrayList<>();
