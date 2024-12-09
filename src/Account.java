@@ -1,4 +1,6 @@
-public class Account implements BankAccountFunctions{
+
+public class Account implements BankAccountFunctions {
+
     private final String id;
     private double balance;
 
@@ -16,10 +18,6 @@ public class Account implements BankAccountFunctions{
             balance += amount;
     }
 
-    @Override
-    public void whitdraw(double amount) {
-
-    }
 
     @Override
     public void withdraw(double amount){

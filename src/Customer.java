@@ -1,28 +1,17 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Customer implements BankAccountFunctions{
-    private String name;
-    private int age;
+public class Customer extends Person {
+
     private List<Account> accounts;
 
     public Customer(String name, int age) {
-        this.name = name;
-        this.age = age;
+        super(name, age);
         this.accounts = new ArrayList<>();
     }
 
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
-    public int getAge() {
-        return age;
-    }
-    public void setAge(int age) {
-        this.age = age;
+    public String getAccountHolder() {
+        return super.getName();
     }
 
     // Getter för kontolistan
