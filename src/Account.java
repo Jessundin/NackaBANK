@@ -29,5 +29,10 @@ public class Account {
         return ;
     }
 
+
      */
+    @Override
+    public String toString() {
+        return "Account ID: " + id + ", Balance: " + balance;
+    }
 }

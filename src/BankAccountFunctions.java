@@ -6,6 +6,9 @@ public interface BankAccountFunctions {
 
     double getBalance();
 
-    public void payBill();
+    public void payBill(String ocr, double amount);
+
+    // Visar detaljerad information om kontot (kan överlappa med toString tror jag)
+    public void displayInfo();
 
 }
