@@ -1,11 +1,11 @@
 public interface BankAccountFunctions {
 
-    public void deposit(double amount);
+    public void deposit();
 
-    public void withdraw(double amount);
+    public void withdraw();
 
     double getBalance();
 
-    public void payBill(String ocr, double amount);
+    public void payBill();
 
 }

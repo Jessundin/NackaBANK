@@ -9,10 +9,6 @@ public class Bank {
         this.person = new ArrayList<>();
     }
 
-    public void setPerson(List<Person> person) {
-        this.person = person;
-    }
-
     public static void main(String[] args) {
 
     }

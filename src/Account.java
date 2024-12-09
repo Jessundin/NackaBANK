@@ -1,5 +1,5 @@
 
-public class Account implements BankAccountFunctions {
+public class Account {
 
     private final String id;
     private double balance;
@@ -11,37 +11,16 @@ public class Account implements BankAccountFunctions {
 
     public String getId() {
         return id;
+
     }
 
-    @Override
-    public void deposit(double amount){
-            balance += amount;
-    }
-
-
-    @Override
-    public void withdraw(double amount){
-        balance -= amount;
-        //Behövs läggas till att man måste ha tillräckligt med pengar på kontot.
-    }
-
-    @Override
-    public double getBalance(){
+    public double getBalance() {
         return balance;
     }
 
-    @Override
-    public void payBill(String ocr, double amount) {
-        if (amount <= balance){
-            balance -= amount;
-            System.out.println("Räkningen är betalad");
-        }
-        else {
-            System.out.println("Inte tillräckligt med pengar på detta konto");
-        }
+    public double setBalance(double balance){
+        return this.balance += balance;
     }
-
-
 
     // Representerar objektets tillstånd. Alltså dem värden som ska skrivas ut
     // Exempelvis. Balance, uppdaterad balance efter utag osv...
