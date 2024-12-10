@@ -1,2 +1,5 @@
 
 maria, 18, 9702122343, 0.0 kr
+Patrik, 30, 9407158888, 0.0 kr
+null, 0, null, 1000.0 kr
+null, 0, null, 400.0 kr

@@ -14,7 +14,7 @@ public class Bank {
         while (true) {
             Customer customer = new Customer();
             customer.welcomePrompt();
-            customer.getInputChoice();
+            customer.getWelcomeInputChoice();
         }
     }
 }

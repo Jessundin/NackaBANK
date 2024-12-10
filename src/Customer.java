@@ -16,9 +16,18 @@ public class Customer extends Person implements BankAccountFunctions {
         this.accounts = new ArrayList<>();
     }
 
-    public String getAccountHolder() {
+    public String getAccountHolderName() {
         return super.getName();
     }
+
+    public int getAccountHolderAge() {
+        return super.getAge();
+    }
+
+    public String getAccountHolderPersonNumber(){
+        return super.getPersonNumber();
+    }
+
 
     public List<Account> getCustomerAccounts() {
         return accounts;
@@ -35,6 +44,7 @@ public class Customer extends Person implements BankAccountFunctions {
     @Override
     public void deposit() {
         Scanner sc = new Scanner(System.in);
+        double newAmount;
 
         // Listar alla konton först&kollar om de finns några konton
         if (accounts.isEmpty()) {
@@ -55,6 +65,14 @@ public class Customer extends Person implements BankAccountFunctions {
             account.setBalance(amount);
             System.out.println("Successfully deposited " + amount + " kr");
             System.out.println("New balance: " + account.getBalance() + " kr");
+            newAmount = amount + account.getBalance();
+            account.setBalance(newAmount);
+            try {
+                writeToFile(getAccountHolderName(), getAccountHolderAge(), getAccountHolderPersonNumber(), newAmount);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
         } else {
             System.out.println("No active account selected");
         }
@@ -200,6 +218,8 @@ public class Customer extends Person implements BankAccountFunctions {
                     this.accounts.add(account);
 
                     System.out.println("Successfully logged in!");
+                    accountPromt();
+                    getAccountInputChoice();
                     return;
                 }
             }
@@ -219,7 +239,7 @@ public class Customer extends Person implements BankAccountFunctions {
                            "0. Exit");
     }
 
-    public void getInputChoice() {
+    public void getWelcomeInputChoice() {
         Scanner sc = new Scanner(System.in);
 
         int choice = sc.nextInt();
@@ -233,6 +253,50 @@ public class Customer extends Person implements BankAccountFunctions {
             case 0:
                 System.out.println("Goodbye!");
                 System.exit(0);
+        }
+    }
+
+    public void accountPromt(){
+        System.out.println("----------------------------------------");
+        System.out.println("Choose what you would like to do: ");
+        System.out.println( "1: Check balance\n" +
+                            "2: Deposit money\n" +
+                            "3: Whitdraw money from account\n" +
+                            "4: Pay bill\n" +
+                            "5: Exit ");
+                            //Lägga till ett val för att skapa ett subkonto?
+    }
+
+    public void getAccountInputChoice(){
+        Scanner sc = new Scanner(System.in);
+        int choice = sc.nextInt();
+
+        switch (choice) {
+            case 1:
+                getBalance();
+                accountPromt();
+                getAccountInputChoice();
+                break;
+            case 2:
+                deposit();
+                accountPromt();
+                getAccountInputChoice();
+                break;
+
+            case 3:
+                withdraw();
+                accountPromt();
+                getAccountInputChoice();
+                break;
+            case 4:
+                payBill();
+                accountPromt();
+                getAccountInputChoice();
+                break;
+            case 5:
+                System.out.println("Goodbye!");
+                System.exit(0);
+
         }
     }
 }
