@@ -34,24 +34,73 @@ public class Customer extends Person implements BankAccountFunctions {
 
     @Override
     public void deposit() {
-//            for(Account account : accounts){
-//
-//            }
-    }
+        Scanner sc = new Scanner(System.in);
 
+        // Listar alla konton först
+        if (accounts.isEmpty()) {
+            System.out.println("No accounts available");
+            return;
+        }
+
+        System.out.print("Enter amount to deposit: ");
+        double amount = sc.nextDouble();
+
+        if (amount <= 0) {
+            System.out.println("Amount must be positive");
+            return;
+        }
+
+
+        if (account != null) { // Om vi har ett aktivt konto, används det
+            account.setBalance(amount);
+            System.out.println("Successfully deposited " + amount + " kr");
+            System.out.println("New balance: " + account.getBalance() + " kr");
+        } else {
+            System.out.println("No active account selected");
+        }
+    }
 
     @Override
     public void withdraw() {
-        double test = account.getBalance();
-        //Behövs läggas till att man måste ha tillräckligt med pengar på kontot.
+        Scanner sc = new Scanner(System.in);
+
+        if (account == null) {
+            System.out.println("No active account selected");
+            return;
+        }
+
+        System.out.print("Enter amount to withdraw: ");
+        double amount = sc.nextDouble();
+
+        if (amount <= 0) {
+            System.out.println("Amount must be positive");
+            return;
+        }
+
+        if (amount > account.getBalance()) {
+            System.out.println("Insufficient funds");
+            return;
+        }
+
+        account.setBalance(-amount);  // Använder negativt belopp för uttag
+        System.out.println("Successfully withdrew " + amount + " kr");
+        System.out.println("New balance: " + account.getBalance() + " kr");
     }
 
     @Override
     public double getBalance() {
-        return account.getBalance();
+        if (account != null) {
+            double balance = account.getBalance();
+            System.out.println("Current balance: " + balance + " kr");
+            return balance;
+        } else {
+            System.out.println("No active account selected");
+            return 0.0;
+        }
     }
 
-    @Override
+
+    //@Override
     public void payBill() {
 //        if (amount <= balance) {
 //            balance -= amount;
@@ -122,7 +171,42 @@ public class Customer extends Person implements BankAccountFunctions {
 //    }
 
     public void logIn() {
-        // skriv in personnummer för att kolla om personen finns i filen
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter person number: ");
+        String pnr = sc.next();
+
+        try {
+            File file = new File("customers.txt");
+            if (!file.exists()) {
+                System.out.println("No accounts found");
+                return;
+            }
+
+            Scanner fileScanner = new Scanner(file);
+            while (fileScanner.hasNextLine()) {
+                String line = fileScanner.nextLine();
+                String[] parts = line.split(", ");
+                if (parts.length >= 3 && parts[2].equals(pnr)) {
+                    String name = parts[0];
+                    int age = Integer.parseInt(parts[1]);
+                    double balance = Double.parseDouble(parts[3].replace(" kr", ""));
+
+                    // Skapa konto och lägg till i listan
+                    Account account = new Account(pnr, name, age);
+                    account.setBalance(balance);
+                    this.account = account;
+                    this.accounts.add(account);
+
+                    System.out.println("Successfully logged in!");
+                    return;
+                }
+            }
+            fileScanner.close();
+
+            System.out.println("Account not found");
+        } catch (FileNotFoundException e) {
+            System.out.println("Error reading customer file");
+        }
     }
 
     public void welcomePrompt() {
