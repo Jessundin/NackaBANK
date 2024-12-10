@@ -11,5 +11,10 @@ public class Bank {
 
     public static void main(String[] args) {
 
+        while (true) {
+            Customer customer = new Customer();
+            customer.welcomePrompt();
+            customer.getInputChoice();
+        }
     }
 }

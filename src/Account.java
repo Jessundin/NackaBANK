@@ -1,18 +1,31 @@
 
 public class Account {
 
-    private final String id;
-    private double balance;
+    Customer customer = new Customer();
+//    private static int accountNumber = 1000;
+//    private final int accountID;
+    private double balance = 0;
 
-    public Account(String id, double initialBalance) {
-        this.id = id;
-        this.balance = initialBalance;
+    public Account(String personNumber, String name, int age) {
+//        this.accountID = accountNumber++;
+        customer.setPersonNumber(personNumber);
+        customer.setName(name);
+        customer.setAge(age);
     }
 
-    public String getId() {
-        return id;
+//    public static int getAccountNumber() {
+//        return accountNumber;
+//    }
 
-    }
+//    public static void setAccountNumber(int accountNumber) {
+//        Account.accountNumber = accountNumber;
+//    }
+//
+//    public int getAccountID() {
+//        return accountID;
+//
+//    }
+
 
     public double getBalance() {
         return balance;

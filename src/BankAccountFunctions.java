@@ -1,3 +1,4 @@
+
 public interface BankAccountFunctions {
 
     public void deposit();
@@ -7,5 +8,7 @@ public interface BankAccountFunctions {
     double getBalance();
 
     public void payBill();
+
+    public void createAccount();
 
 }
