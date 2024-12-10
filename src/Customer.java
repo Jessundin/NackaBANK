@@ -36,7 +36,7 @@ public class Customer extends Person implements BankAccountFunctions {
     public void deposit() {
         Scanner sc = new Scanner(System.in);
 
-        // Listar alla konton först
+        // Listar alla konton först&kollar om de finns några konton
         if (accounts.isEmpty()) {
             System.out.println("No accounts available");
             return;
@@ -64,6 +64,7 @@ public class Customer extends Person implements BankAccountFunctions {
     public void withdraw() {
         Scanner sc = new Scanner(System.in);
 
+        //om de finns ett aktivt konto,
         if (account == null) {
             System.out.println("No active account selected");
             return;
@@ -72,12 +73,12 @@ public class Customer extends Person implements BankAccountFunctions {
         System.out.print("Enter amount to withdraw: ");
         double amount = sc.nextDouble();
 
-        if (amount <= 0) {
+        if (amount <= 0) { //// Kollar att summan är större än noll (d är en säkerhetskontroll, går ej å ta ut om d negativt)
             System.out.println("Amount must be positive");
             return;
         }
 
-        if (amount > account.getBalance()) {
+        if (amount > account.getBalance()) { //om d finns tillräckligt med para
             System.out.println("Insufficient funds");
             return;
         }
@@ -176,7 +177,7 @@ public class Customer extends Person implements BankAccountFunctions {
         String pnr = sc.next();
 
         try {
-            File file = new File("customers.txt");
+            File file = new File("customers.txt"); //öppnar filen me konto
             if (!file.exists()) {
                 System.out.println("No accounts found");
                 return;
@@ -185,13 +186,14 @@ public class Customer extends Person implements BankAccountFunctions {
             Scanner fileScanner = new Scanner(file);
             while (fileScanner.hasNextLine()) {
                 String line = fileScanner.nextLine();
+                //delar upp raderna så de blir name,age,pnr,balance
                 String[] parts = line.split(", ");
-                if (parts.length >= 3 && parts[2].equals(pnr)) {
-                    String name = parts[0];
+                if (parts.length >= 3 && parts[2].equals(pnr)) { //om d matchar pnr alltså,
+                    String name = parts[0]; //hämtar all kontoinfo
                     int age = Integer.parseInt(parts[1]);
                     double balance = Double.parseDouble(parts[3].replace(" kr", ""));
 
-                    // Skapa konto och lägg till i listan
+                    // Skapar konto och lägg till i listan
                     Account account = new Account(pnr, name, age);
                     account.setBalance(balance);
                     this.account = account;
