@@ -44,13 +44,6 @@ public class Customer extends Person implements BankAccountFunctions {
     @Override
     public void deposit() {
         Scanner sc = new Scanner(System.in);
-
-        // Kontrollera om det finns några konton
-        if (accounts.isEmpty()) {
-            System.out.println("No accounts available");
-            return;
-        }
-
         System.out.print("Enter amount to deposit: ");
         double amount = sc.nextDouble();
 
@@ -59,19 +52,9 @@ public class Customer extends Person implements BankAccountFunctions {
             return;
         }
 
-        if (account != null) { // Om vi har ett aktivt konto, används det
-            double newBalance = account.getBalance() + amount;  // Beräknar nytt saldo
-            account.setBalance(newBalance);  // Sätt det nya saldot en gång deposited " + amount + " kr");
+        if (account != null) {
+            account.deposit(amount);  // Använd deposit istället för setBalance
             System.out.println("New balance: " + account.getBalance() + " kr");
-
-            //Försökte använda writeToFile för att uppdatera txt filen efter att något hänt med kontot. Men det funkade inte riktigt
-            /*try {
-                writeToFile(getAccountHolderName(), getAccountHolderAge(), getAccountHolderPersonNumber(), newBalance);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-             */
         } else {
             System.out.println("No active account selected");
         }
@@ -100,7 +83,7 @@ public class Customer extends Person implements BankAccountFunctions {
             return;
         }
 
-        account.setBalance(-amount);  // Använder negativt belopp för uttag
+        account.withdraw(amount);  // Använd withdraw istället för setBalance
         System.out.println("Successfully withdrew " + amount + " kr");
         System.out.println("New balance: " + account.getBalance() + " kr");
     }
@@ -210,9 +193,8 @@ public class Customer extends Person implements BankAccountFunctions {
                     int age = Integer.parseInt(parts[1]);
                     double balance = Double.parseDouble(parts[3].replace(" kr", ""));
 
-                    // Skapar konto och lägg till i listan
                     Account account = new Account(pnr, name, age);
-                    account.setBalance(balance);
+                    account.deposit(balance);  // Använder deposit istället för setBalance
                     this.account = account;
                     this.accounts.add(account);
 
