@@ -1,46 +1,34 @@
-
-public class Account {
-
-    Customer customer = new Customer();
-//    private static int accountNumber = 1000;
-//    private final int accountID;
+public class Account implements BankComponent {
+    private Customer customer;
     private double balance = 0;
 
     public Account(String personNumber, String name, int age) {
-//        this.accountID = accountNumber++;
+        customer = new Customer();
         customer.setPersonNumber(personNumber);
         customer.setName(name);
         customer.setAge(age);
     }
 
-//    public static int getAccountNumber() {
-//        return accountNumber;
-//    }
-
-//    public static void setAccountNumber(int accountNumber) {
-//        Account.accountNumber = accountNumber;
-//    }
-//
-//    public int getAccountID() {
-//        return accountID;
-//
-//    }
-
-
+    @Override
     public double getBalance() {
         return balance;
     }
 
-    public double setBalance(double balance){
-        return this.balance += balance;
+    @Override
+    public void deposit(double amount) {
+        this.balance += amount;
     }
 
-    // Representerar objektets tillstånd. Alltså dem värden som ska skrivas ut
-    // Exempelvis. Balance, uppdaterad balance efter utag osv...
-    /*@Override
-    public String toString() {
-        return ;
+    @Override
+    public void withdraw(double amount) {
+        if (amount <= balance) {
+            this.balance -= amount;
+        }
     }
 
-     */
+    @Override
+    public void display() {
+        System.out.println("Konto för: " + customer.getName());
+        System.out.println("Saldo: " + balance + " kr");
+    }
 }
