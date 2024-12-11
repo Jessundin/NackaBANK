@@ -44,9 +44,8 @@ public class Customer extends Person implements BankAccountFunctions {
     @Override
     public void deposit() {
         Scanner sc = new Scanner(System.in);
-        double newAmount;
 
-        // Listar alla konton först&kollar om de finns några konton
+        // Kontrollera om det finns några konton
         if (accounts.isEmpty()) {
             System.out.println("No accounts available");
             return;
@@ -60,19 +59,16 @@ public class Customer extends Person implements BankAccountFunctions {
             return;
         }
 
-
         if (account != null) { // Om vi har ett aktivt konto, används det
-            account.setBalance(amount);
-            System.out.println("Successfully deposited " + amount + " kr");
+            double newBalance = account.getBalance() + amount;  // Beräknar nytt saldo
+            account.setBalance(newBalance);  // Sätt det nya saldot en gång deposited " + amount + " kr");
             System.out.println("New balance: " + account.getBalance() + " kr");
-            newAmount = amount + account.getBalance();
-            account.setBalance(newAmount);
+
             try {
-                writeToFile(getAccountHolderName(), getAccountHolderAge(), getAccountHolderPersonNumber(), newAmount);
+                writeToFile(getAccountHolderName(), getAccountHolderAge(), getAccountHolderPersonNumber(), newBalance);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-
         } else {
             System.out.println("No active account selected");
         }
