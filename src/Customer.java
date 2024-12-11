@@ -64,11 +64,14 @@ public class Customer extends Person implements BankAccountFunctions {
             account.setBalance(newBalance);  // Sätt det nya saldot en gång deposited " + amount + " kr");
             System.out.println("New balance: " + account.getBalance() + " kr");
 
-            try {
+            //Försökte använda writeToFile för att uppdatera txt filen efter att något hänt med kontot. Men det funkade inte riktigt
+            /*try {
                 writeToFile(getAccountHolderName(), getAccountHolderAge(), getAccountHolderPersonNumber(), newBalance);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+
+             */
         } else {
             System.out.println("No active account selected");
         }
