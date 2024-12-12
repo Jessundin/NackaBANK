@@ -5,3 +5,4 @@ null, 0, null, 1000.0 kr
 null, 0, null, 400.0 kr
 null, 0, null, 800.0 kr
 null, 0, null, 500.0 kr
+Poppi, 34, 9702122343, 0.0 kr

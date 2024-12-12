@@ -1,46 +1,23 @@
 
 public class Account {
-
-    Customer customer = new Customer();
-//    private static int accountNumber = 1000;
-//    private final int accountID;
     private double balance = 0;
+    private String accountHolder;
+    private String personNumber;
 
     public Account(String personNumber, String name, int age) {
-//        this.accountID = accountNumber++;
-        customer.setPersonNumber(personNumber);
-        customer.setName(name);
-        customer.setAge(age);
+        this.personNumber = personNumber;
+        this.accountHolder = name;
     }
-
-//    public static int getAccountNumber() {
-//        return accountNumber;
-//    }
-
-//    public static void setAccountNumber(int accountNumber) {
-//        Account.accountNumber = accountNumber;
-//    }
-//
-//    public int getAccountID() {
-//        return accountID;
-//
-//    }
-
 
     public double getBalance() {
         return balance;
     }
 
-    public double setBalance(double balance){
-        return this.balance += balance;
+    public double setBalance(double amount) {
+        return this.balance += amount;
     }
-
-    // Representerar objektets tillstånd. Alltså dem värden som ska skrivas ut
-    // Exempelvis. Balance, uppdaterad balance efter utag osv...
-    /*@Override
-    public String toString() {
-        return ;
-    }
-
-     */
 }
+
+
+//Förenklad, sparar bara kontoinfo
+//Behöver inte egen Customer-instans eftersom den alltid används via Customer-klassen
