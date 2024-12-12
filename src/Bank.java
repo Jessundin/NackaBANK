@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Bank {
 
@@ -17,8 +18,30 @@ public class Bank {
         return instance;
     }
 
-    public List<Person> getPerson() {
-        return person;
+    public void welcomePrompt() {
+        System.out.println("----------------------------------------");
+        System.out.println("Welcome to NackaBANK, choose an option: ");
+        System.out.println("1. Create account\n" +
+                           "2. Log in\n" +
+                           "0. Exit");
+    }
+
+    public void getWelcomeInputChoice() {
+        Customer customer = new Customer();
+        Scanner sc = new Scanner(System.in);
+
+        int choice = sc.nextInt();
+        switch (choice) {
+            case 1:
+                customer.createAccount();
+                break;
+            case 2:
+                customer.logIn();
+                break;
+            case 0:
+                System.out.println("Goodbye!");
+                System.exit(0);
+        }
     }
 
     public static void main(String[] args) {
@@ -27,9 +50,8 @@ public class Bank {
 
             Bank bank = Bank.getInstance();
 
-            Customer customer = new Customer();
-            customer.welcomePrompt();
-            customer.getWelcomeInputChoice();
+            bank.welcomePrompt();
+            bank.getWelcomeInputChoice();
         }
     }
 }

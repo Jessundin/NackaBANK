@@ -11,10 +11,7 @@ public abstract class Person {
         this.age = age;
     }
 
-    public Person() {
-    }
-
-
+    public Person() {}
 
     public void setName(String name) {
         this.name = name;
@@ -27,14 +24,6 @@ public abstract class Person {
     public void setPersonNumber(String personNumber) {
         this.personNumber = personNumber;
     }
-
-//    public int getPersonID() {
-//        return personID;
-//    }
-
-//    public void setPersonID(int personID) {
-//        this.personID = personID;
-//    }
 
     public void setAge(int age) {
         this.age = age;

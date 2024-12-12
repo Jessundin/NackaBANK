@@ -37,10 +37,6 @@ public class Customer extends Person implements BankAccountFunctions {
         this.accounts.add(account);
     }
 
-//    public void removeAccount(Account account) {
-//        this.accounts.remove(account.getAccountID());
-//    }
-
     @Override
     public void deposit() {
         Scanner sc = new Scanner(System.in);
@@ -118,16 +114,8 @@ public class Customer extends Person implements BankAccountFunctions {
     }
 
 
-    //@Override
+    @Override
     public void payBill() {
-//        if (amount <= balance) {
-//            balance -= amount;
-//            System.out.println("Räkningen är betalad");
-//        } else {
-//            System.out.println("Inte tillräckligt med pengar på detta konto");
-//        }
-
-        //behövs en override string toString här
 
     }
 
@@ -156,8 +144,6 @@ public class Customer extends Person implements BankAccountFunctions {
             Account account = new Account(pnr, name, age);
             this.addAccount(account);
 
-//            System.out.println("Account created with ID: " + account.getAccountID());
-
             try {
                 writeToFile(name, age, pnr, account.getBalance());
             } catch (Exception e) {
@@ -175,18 +161,6 @@ public class Customer extends Person implements BankAccountFunctions {
             writer.newLine();
         }
     }
-
-//    public void removeAccount(int id) {
-//        System.out.println("Enter account ID");
-//        Scanner sc = new Scanner(System.in);
-//        int inputID = sc.nextInt();
-//        for (Account account : accounts) {
-////            if (account.getAccountID() == inputID) {
-////                accounts.remove(id);
-////                break;
-////            } else System.out.println("Account with ID " + inputID + " does not exist");
-//        }
-//    }
 
     public void logIn() {
         Scanner sc = new Scanner(System.in);
@@ -217,7 +191,7 @@ public class Customer extends Person implements BankAccountFunctions {
                     this.accounts.add(account);
 
                     System.out.println("Successfully logged in!");
-                    accountPromt();
+                    accountPrompt();
                     getAccountInputChoice();
                     return;
                 }
@@ -230,32 +204,7 @@ public class Customer extends Person implements BankAccountFunctions {
         }
     }
 
-    public void welcomePrompt() {
-        System.out.println("----------------------------------------");
-        System.out.println("Welcome to NackaBANK, choose an option: ");
-        System.out.println("1. Create account\n" +
-                           "2. Log in\n" +
-                           "0. Exit");
-    }
-
-    public void getWelcomeInputChoice() {
-        Scanner sc = new Scanner(System.in);
-
-        int choice = sc.nextInt();
-        switch (choice) {
-            case 1:
-                createAccount();
-                break;
-            case 2:
-                logIn();
-                break;
-            case 0:
-                System.out.println("Goodbye!");
-                System.exit(0);
-        }
-    }
-
-    public void accountPromt(){
+    public void accountPrompt(){
         System.out.println("----------------------------------------");
         System.out.println("Choose what you would like to do: ");
         System.out.println( "1: Check balance\n" +
@@ -273,23 +222,23 @@ public class Customer extends Person implements BankAccountFunctions {
         switch (choice) {
             case 1:
                 getBalance();
-                accountPromt();
+                accountPrompt();
                 getAccountInputChoice();
                 break;
             case 2:
                 deposit();
-                accountPromt();
+                accountPrompt();
                 getAccountInputChoice();
                 break;
 
             case 3:
                 withdraw();
-                accountPromt();
+                accountPrompt();
                 getAccountInputChoice();
                 break;
             case 4:
                 payBill();
-                accountPromt();
+                accountPrompt();
                 getAccountInputChoice();
                 break;
             case 5:

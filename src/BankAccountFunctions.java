@@ -1,14 +1,14 @@
 
 public interface BankAccountFunctions {
 
-    public void deposit();
+    void deposit();
 
-    public void withdraw();
+    void withdraw();
 
     double getBalance();
 
-    public void payBill();
+    void payBill();
 
-    public void createAccount();
+    void createAccount();
 
 }
