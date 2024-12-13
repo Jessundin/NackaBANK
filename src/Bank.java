@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -6,6 +7,8 @@ public class Bank {
 
     private List <Person> person;
     private static Bank instance;
+
+
 
     private Bank() {
         this.person = new ArrayList<>();
@@ -27,21 +30,25 @@ public class Bank {
     }
 
     public void getWelcomeInputChoice() {
-        Customer customer = new Customer();
         Scanner sc = new Scanner(System.in);
-
         int choice = sc.nextInt();
+        Account account = new Account();
         switch (choice) {
             case 1:
-                customer.createAccount();
+                createAccount();
                 break;
             case 2:
-                customer.logIn();
+                logIn();
                 break;
             case 0:
                 System.out.println("Goodbye!");
                 System.exit(0);
         }
+    }
+
+
+    public void addAccount(Account account) {
+        this.accounts.add(account);
     }
 
     public static void main(String[] args) {
