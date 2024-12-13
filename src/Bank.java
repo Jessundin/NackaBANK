@@ -5,13 +5,12 @@ import java.util.Scanner;
 
 public class Bank {
 
-    private List <Person> person;
+    private List<Customer> customers;
     private static Bank instance;
 
 
-
     private Bank() {
-        this.person = new ArrayList<>();
+        this.customers = new ArrayList<>();
     }
 
     public static Bank getInstance() {
@@ -32,24 +31,56 @@ public class Bank {
     public void getWelcomeInputChoice() {
         Scanner sc = new Scanner(System.in);
         int choice = sc.nextInt();
-        Account account = new Account();
+        Customer customer = new Customer();
+        Account account = new Account(customer.getPersonNumber(), customer.getName(), customer.getAge() );
         switch (choice) {
             case 1:
                 createAccount();
                 break;
             case 2:
-                logIn();
+                account.logIn();
                 break;
             case 0:
                 System.out.println("Goodbye!");
                 System.exit(0);
         }
     }
+    public void createAccount() {
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter your name: ");
+        String name = sc.next();
+
+        System.out.print("Enter your person number: ");
+        String pnr = sc.next();
 
 
-    public void addAccount(Account account) {
-        this.accounts.add(account);
+        while (true) {
+            System.out.print("Enter your age: ");
+            int age = sc.nextInt();
+
+            if (age < 18) {
+                System.out.println("You must be at least 18 years old to create an account!\n");
+                continue;
+            }
+
+            Customer customer = new Customer(pnr, name, age);
+            Account account = new Account(pnr, name, age);
+            customer.addAccount(account);
+
+            this.customers.add(customer);
+            System.out.println("Customer created for " + name + " with person number " + pnr);
+
+            try {
+                account.writeToFile(name, age, pnr, account.getBalance());
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+            break;
+        }
     }
+
 
     public static void main(String[] args) {
 

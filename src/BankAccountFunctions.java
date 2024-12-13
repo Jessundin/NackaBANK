@@ -9,6 +9,6 @@ public interface BankAccountFunctions {
 
     void payBill();
 
-    void createAccount();
+//    void createAccount();
 
 }

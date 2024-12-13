@@ -15,10 +15,6 @@ public class Account implements BankAccountFunctions{
         customer.setAge(age);
     }
 
-    public double getBalance() {
-        return balance;
-    }
-
     public double setBalance(double balance){
         return this.balance += balance;
     }
@@ -82,39 +78,7 @@ public class Account implements BankAccountFunctions{
     }
 
 
-    public void createAccount() {
-
-        Scanner sc = new Scanner(System.in);
-
-        System.out.print("Enter your name: ");
-        String name = sc.next();
-
-        System.out.print("Enter your person number: ");
-        String pnr = sc.next();
-
-
-        while (true) {
-            System.out.print("Enter your age: ");
-            int age = sc.nextInt();
-
-            if (age < 18) {
-                System.out.println("You must be at least 18 years old to create an account!\n");
-                continue;
-            }
-
-            Account account = new Account(pnr, name, age);
-            this.addAccount(account);
-            System.out.println("Customer created for " + name + " with person number " + pnr);
-
-            try {
-                writeToFile(name, age, pnr, account.getBalance());
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-            break;
-        }
-    }
-    private void writeToFile(String name, int age, String pnr, double balance) {
+    public void writeToFile(String name, int age, String pnr, double balance) {
         File file = new File("customers.txt");
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
@@ -126,9 +90,34 @@ public class Account implements BankAccountFunctions{
         }
     }
 
-    public void payBill() {
 
+    @Override
+    public void payBill() {
+        Scanner sc = new Scanner(System.in);
+
+        if (currentAccount ==null) { //om personen e inloggad å de finns ett aktivt konto,
+            System.out.println("No active account selected");
+            return;
+        }
+        System.out.println("\n--- Bill Payment ---");
+        System.out.println("Enter recipient name: ");
+        String recipient = sc.nextLine();
+
+        System.out.print("Enter bill amount: ");
+        double amount = sc.nextDouble();
+
+        if (amount <= 0) {
+            System.out.println("Amount most be positive ");
+            return;
+        }
+        if (amount > currentAccount.getBalance()) { // OM de finns pengar på kontot
+            System.out.println("Your balance is too low for this payment");
+            System.out.println("Current balance: " + currentAccount.getBalance() + " kr");
+            return;
+        }
+        
     }
+
     public void logIn() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter person number: ");
@@ -142,6 +131,8 @@ public class Account implements BankAccountFunctions{
             }
 
             Scanner fileScanner = new Scanner(file);
+            boolean accountFound = false;
+
             while (fileScanner.hasNextLine()) {
                 String line = fileScanner.nextLine();
                 //delar upp raderna så de blir name,age,pnr,balance
@@ -154,8 +145,8 @@ public class Account implements BankAccountFunctions{
                     // Skapar konto och lägg till i listan
                     Account account = new Account(pnr, name, age);
                     account.setBalance(balance);
-                    this.accounts.add(account);
                     this.currentAccount = account;
+                    this.accounts.add(account);
 
                     System.out.println("Successfully logged in!");
                     accountPrompt();
@@ -213,4 +204,7 @@ public class Account implements BankAccountFunctions{
         }
     }
 
+    public Account getCurrentAccount() {
+        return currentAccount;
+    }
 }
