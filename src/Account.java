@@ -120,7 +120,35 @@ public class Account implements BankAccountFunctions{
         System.out.println("Amount: " + amount + "kr");
         System.out.println("CONFIRM PAYMENT YES/NO:");
         sc.nextLine();
-        //String confirm
+        String confirm = sc.nextLine();
+
+        if (confirm.equalsIgnoreCase("yes")) {
+            //pengarna ska dras från kontot genom att skicka in ett negativt belopp,
+            currentAccount.setBalance(-amount);
+
+            try {
+                File file = new File("Transactions.txt"); //ska vi ha en separat fil för transaktioner?annars ändrar vi bara filen!
+                BufferedWriter writer = new BufferedWriter(new FileWriter(file,true));
+                String transactions = customer.getPersonNumber() +
+                        ", Betalning till " +
+                        recipient +
+                        ", -" +
+                        String.format("%.2f", amount) +
+                        " kr, " +
+                        java.time.LocalDateTime.now(); // för exakta tiden (?)
+                writer.write(transactions);
+                writer.newLine();
+                writer.close();
+            } catch (IOException e) {
+                System.out.println("Error saving transaction history"); //fel meddelande om de ej går igenom
+            }
+            // BEKRÄFTELSE ANG ÖVERFÖRINGEN (kanske lite mkt system out pritnln men hellre för mkt än för lite tänker jag?
+            System.out.println("Payment successful!");
+            System.out.println("New balance: " + currentAccount.getBalance() + " kr");
+        } else {
+            // Om användaren ej tar YES, antingen låter vi den vara så eller så byter vi till goodbye, its doesn't mattaahh
+            System.out.println("Payment cancelled");
+        }
 
     }
 
