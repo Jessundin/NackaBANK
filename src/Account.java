@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -7,7 +8,7 @@ public class Account implements BankAccountFunctions{
     Customer customer = new Customer();
     private double balance = 0;
     private Account currentAccount;
-    private List<Account> accounts;
+    private List<Account> accounts = new ArrayList<>();
 
     public Account(String personNumber, String name, int age) {
         customer.setPersonNumber(personNumber);
@@ -185,7 +186,7 @@ public class Account implements BankAccountFunctions{
                     System.out.println("Successfully logged in!");
                     accountPrompt();
                     getAccountInputChoice();
-                    return;
+                    break;
                 }
             }
             fileScanner.close();
