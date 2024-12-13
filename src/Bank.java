@@ -1,4 +1,4 @@
-import java.io.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -32,7 +32,7 @@ public class Bank {
         Scanner sc = new Scanner(System.in);
         int choice = sc.nextInt();
         Customer customer = new Customer();
-        Account account = new Account(customer.getPersonNumber(), customer.getName(), customer.getAge() );
+        Account account = new Account(customer.getSocialSecurityNumber(), customer.getName(), customer.getAge());
         switch (choice) {
             case 1:
                 createAccount();
@@ -45,42 +45,58 @@ public class Bank {
                 System.exit(0);
         }
     }
+
     public void createAccount() {
 
         Scanner sc = new Scanner(System.in);
-
         System.out.print("Enter your name: ");
         String name = sc.next();
+        String ssn;
 
-        System.out.print("Enter your person number: ");
-        String pnr = sc.next();
-
+        int currentYear = LocalDate.now().getYear();
 
         while (true) {
-            System.out.print("Enter your age: ");
-            int age = sc.nextInt();
+            System.out.print("Enter your social security number (10 digits): ");
+            ssn = sc.next();
 
-            if (age < 18) {
-                System.out.println("You must be at least 18 years old to create an account!\n");
+            if (ssn.length() != 10) {
+                System.out.println("Please enter a valid 10-digit social security number.");
                 continue;
             }
 
-            Customer customer = new Customer(pnr, name, age);
-            Account account = new Account(pnr, name, age);
-            customer.addAccount(account);
+            String firstTwoDigits = ssn.substring(0, 2);
 
-            this.customers.add(customer);
-            System.out.println("Customer created for " + name + " with person number " + pnr);
+            int birthYear = Integer.parseInt(firstTwoDigits);
 
-            try {
-                account.writeToFile(name, age, pnr, account.getBalance());
-            } catch (Exception e) {
-                throw new RuntimeException(e);
+            if (birthYear > currentYear % 100) {
+                birthYear += 1900;
+            } else {
+                birthYear += 2000;
             }
-            break;
+
+            int age = currentYear - birthYear;
+
+            if (age >= 18) {
+                break;
+            } else {
+                System.out.println("You must be at least 18 years old to create an account!\n");
+            }
+        }
+
+        int age = currentYear - Integer.parseInt(ssn.substring(0, 2));
+        Customer customer = new Customer(ssn, name, age);
+        Account account = new Account(ssn, name, age);
+        customer.addAccount(account);
+
+        this.customers.add(customer);
+        System.out.println("Customer created for " + name + " with social security number " + ssn);
+
+        try {
+            account.writeToFile(name, age, ssn, account.getBalance());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
-
 
     public static void main(String[] args) {
 

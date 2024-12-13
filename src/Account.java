@@ -3,26 +3,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Account implements BankAccountFunctions{
+public class Account implements BankAccountFunctions {
 
-    Customer customer = new Customer();
+    Customer customer;
     private double balance = 0;
-    private Account currentAccount;
-    private List<Account> accounts = new ArrayList<>();
+    private double amount = -1;
 
-    public Account(String personNumber, String name, int age) {
-        customer.setPersonNumber(personNumber);
-        customer.setName(name);
-        customer.setAge(age);
+    public Account(String socialSecurityNumber, String name, int age) {
+        customer = new Customer(socialSecurityNumber, name, age);
     }
 
-    public double setBalance(double balance){
+    public double setBalance(double balance) {
         return this.balance += balance;
     }
+
     @Override
     public double getBalance() {
-        if (currentAccount != null) {
-            double balance = currentAccount.getBalance();
+        if (balance >= 0) {
             System.out.println("Current balance: " + balance + " kr");
             return balance;
         } else {
@@ -34,72 +31,53 @@ public class Account implements BankAccountFunctions{
     public void deposit() {
         Scanner sc = new Scanner(System.in);
 
-        // Kontrollera om det finns några konton
-        if (accounts == null) {
-            System.out.println("No active account selected");
-            return;
+        while (amount <= 0) {
+            System.out.print("Enter amount to deposit: ");
+
+            if (sc.hasNextDouble()) {
+                amount = sc.nextDouble();
+
+                if (amount <= 0) {
+                    System.out.println("Amount must be positive. Please try again.");
+                }
+            } else {
+                System.out.println("Invalid input. Please enter a number.");
+                sc.next();
+            }
         }
-
-        System.out.print("Enter amount to deposit: ");
-        double amount = sc.nextDouble();
-
-        if (amount <= 0) {
-            System.out.println("Amount must be positive");
-            return;
-        }
-
-        currentAccount.setBalance(amount);
-        System.out.println("New balance: " + currentAccount.getBalance() + " kr");
+        balance += amount;
+        System.out.println("New balance: " + balance + " kr");
     }
+
     public void withdraw() {
         Scanner sc = new Scanner(System.in);
+        double amount = -1;
 
-        //om de finns ett aktivt konto,
-        if (currentAccount == null) {
-            System.out.println("No active account selected");
-            return;
+        while (amount <= 0 || amount > balance) {
+            System.out.print("Enter amount to withdraw: ");
+
+            if (sc.hasNextDouble()) {
+                amount = sc.nextDouble();
+
+                if (amount <= 0) {
+                    System.out.println("Amount must be positive. Please try again.");
+                } else if (amount > balance) {
+                    System.out.println("Insufficient funds. Please enter a valid amount.");
+                }
+            } else {
+                System.out.println("Invalid input. Please enter a numeric value.");
+                sc.next();
+            }
         }
-
-        System.out.print("Enter amount to withdraw: ");
-        double amount = sc.nextDouble();
-
-        if (amount <= 0) { //// Kollar att summan är större än noll (d är en säkerhetskontroll, går ej å ta ut om d negativt)
-            System.out.println("Amount must be positive");
-            return;
-        }
-
-        if (amount > currentAccount.getBalance()) { //om d finns tillräckligt med para
-            System.out.println("Insufficient funds");
-            return;
-        }
-
-        currentAccount.setBalance(-amount);  // Använder negativt belopp för uttag
+        balance -= amount;
         System.out.println("Successfully withdrew " + amount + " kr");
-        System.out.println("New balance: " + currentAccount.getBalance() + " kr");
+        System.out.println("New balance: " + balance + " kr");
     }
-
-
-    public void writeToFile(String name, int age, String pnr, double balance) {
-        File file = new File("customers.txt");
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
-            writer.write(name + ", " + age + ", " + pnr + ", " + balance + " kr");
-            writer.newLine();
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
 
     @Override
     public void payBill() {
         Scanner sc = new Scanner(System.in);
 
-        if (currentAccount ==null) { //om personen e inloggad å de finns ett aktivt konto,
-            System.out.println("No active account selected");
-            return;
-        }
         System.out.println("\n--- Bill Payment ---");
         System.out.println("Enter recipient name: ");
         String recipient = sc.nextLine();
@@ -111,9 +89,9 @@ public class Account implements BankAccountFunctions{
             System.out.println("Amount most be positive ");
             return;
         }
-        if (amount > currentAccount.getBalance()) { // OM de finns pengar på kontot
+        if (amount > balance) { // OM de finns pengar på kontot
             System.out.println("Your balance is too low for this payment");
-            System.out.println("Current balance: " + currentAccount.getBalance() + " kr");
+            System.out.println("Current balance: " + balance + " kr");
             return;
         }
         System.out.println("\nPayment Details: ");
@@ -125,18 +103,18 @@ public class Account implements BankAccountFunctions{
 
         if (confirm.equalsIgnoreCase("yes")) {
             //pengarna ska dras från kontot genom att skicka in ett negativt belopp,
-            currentAccount.setBalance(-amount);
+            balance -= amount;
 
             try {
                 File file = new File("Transactions.txt"); //ska vi ha en separat fil för transaktioner?annars ändrar vi bara filen!
-                BufferedWriter writer = new BufferedWriter(new FileWriter(file,true));
-                String transactions = customer.getPersonNumber() +
-                        ", Betalning till " +
-                        recipient +
-                        ", -" +
-                        String.format("%.2f", amount) +
-                        " kr, " +
-                        java.time.LocalDateTime.now(); // för exakta tiden (?)
+                BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
+                String transactions = customer.getSocialSecurityNumber() +
+                                      ", Betalning till " +
+                                      recipient +
+                                      ", -" +
+                                      String.format("%.2f", amount) +
+                                      " kr, " +
+                                      java.time.LocalDateTime.now(); // för exakta tiden (?)
                 writer.write(transactions);
                 writer.newLine();
                 writer.close();
@@ -145,7 +123,7 @@ public class Account implements BankAccountFunctions{
             }
             // BEKRÄFTELSE ANG ÖVERFÖRINGEN (kanske lite mkt system out pritnln men hellre för mkt än för lite tänker jag?
             System.out.println("Payment successful!");
-            System.out.println("New balance: " + currentAccount.getBalance() + " kr");
+            System.out.println("New balance: " + balance + " kr");
         } else {
             // Om användaren ej tar YES, antingen låter vi den vara så eller så byter vi till goodbye, its doesn't mattaahh
             System.out.println("Payment cancelled");
@@ -180,33 +158,38 @@ public class Account implements BankAccountFunctions{
                     // Skapar konto och lägg till i listan
                     Account account = new Account(pnr, name, age);
                     account.setBalance(balance);
-                    this.currentAccount = account;
-                    this.accounts.add(account);
+                    this.balance = account.balance;
 
                     System.out.println("Successfully logged in!");
+                    accountFound = true;
                     accountPrompt();
                     getAccountInputChoice();
+
                     break;
                 }
             }
             fileScanner.close();
-            System.out.println("Account not found whit person number " + pnr);
+
+            if (!accountFound) {
+                System.out.println("Account not found with person number " + pnr);
+            }
         } catch (FileNotFoundException e) {
             System.out.println("Error reading customer file");
         }
     }
 
-    public void accountPrompt(){
+    public void accountPrompt() {
         System.out.println("----------------------------------------");
         System.out.println("Choose what you would like to do: ");
-        System.out.println( "1: Check balance\n" +
-                "2: Deposit money\n" +
-                "3: Whitdraw money from account\n" +
-                "4: Pay bill\n" +
-                "5: Exit ");
+        System.out.println("1: Check balance\n" +
+                           "2: Deposit money\n" +
+                           "3: Whitdraw money from account\n" +
+                           "4: Pay bill\n" +
+                           "5: Exit ");
         //Lägga till ett val för att skapa ett subkonto?
     }
-    public void getAccountInputChoice(){
+
+    public void getAccountInputChoice() {
         Scanner sc = new Scanner(System.in);
         int choice = sc.nextInt();
 
@@ -237,9 +220,5 @@ public class Account implements BankAccountFunctions{
                 System.exit(0);
 
         }
-    }
-
-    public Account getCurrentAccount() {
-        return currentAccount;
     }
 }
