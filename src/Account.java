@@ -1,6 +1,4 @@
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class Account implements BankAccountFunctions {
@@ -72,6 +70,18 @@ public class Account implements BankAccountFunctions {
         balance -= amount;
         System.out.println("Successfully withdrew " + amount + " kr");
         System.out.println("New balance: " + balance + " kr");
+    }
+
+    public void writeToFile(String name, int age, String pnr, double balance) {
+        File file = new File("customers.txt");
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
+            writer.write(name + ", " + age + ", " + pnr + ", " + balance + " kr");
+            writer.newLine();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
