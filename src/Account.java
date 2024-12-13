@@ -115,7 +115,13 @@ public class Account implements BankAccountFunctions{
             System.out.println("Current balance: " + currentAccount.getBalance() + " kr");
             return;
         }
-        
+        System.out.println("\nPayment Details: ");
+        System.out.println("Recipient: " + recipient);
+        System.out.println("Amount: " + amount + "kr");
+        System.out.println("CONFIRM PAYMENT YES/NO:");
+        sc.nextLine();
+        //String confirm
+
     }
 
     public void logIn() {
@@ -155,7 +161,7 @@ public class Account implements BankAccountFunctions{
                 }
             }
             fileScanner.close();
-            System.out.println("Account not found");
+            System.out.println("Account not found whit person number " + pnr);
         } catch (FileNotFoundException e) {
             System.out.println("Error reading customer file");
         }
