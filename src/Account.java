@@ -1,4 +1,6 @@
 import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -95,8 +97,11 @@ public class Account implements BankAccountFunctions {
                 writer.newLine();
             }
             if (fileName.equals("Transactions.txt")) {
+                LocalDateTime currentDateAndTime = java.time.LocalDateTime.now();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE dd MMMM yyyy HH:mm");
+                String dateAndTime = currentDateAndTime.format(formatter);
                 writer.write(customer.getSocialSecurityNumber() + ", Betalning till " + recipient +
-                        ", " + String.format("%.2f", balance) + " kr, " + java.time.LocalDateTime.now());
+                        ", " + String.format("%.2f", balance) + " kr, " + dateAndTime);
                 writer.newLine();
             }
         }
