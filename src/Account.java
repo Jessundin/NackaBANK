@@ -116,22 +116,17 @@ public class Account implements BankAccountFunctions {
             balance -= amount;
 
             try {
-                File file = new File("Transactions.txt"); //ska vi ha en separat fil för transaktioner?annars ändrar vi bara filen!
+                File file = new File("Transactions.txt"); //ska vi ha en separat fil för transaktioner?
                 BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
                 String transactions = customer.getSocialSecurityNumber() +
-                                      ", Betalning till " +
-                                      recipient +
-                                      ", -" +
-                                      String.format("%.2f", amount) +
-                                      " kr, " +
-                                      java.time.LocalDateTime.now(); // för exakta tiden (?)
+                        ", Betalning till " + recipient + ", -" +  String.format("%.2f", amount) + " kr, " + java.time.LocalDateTime.now(); // för exakta tiden
                 writer.write(transactions);
                 writer.newLine();
                 writer.close();
             } catch (IOException e) {
                 System.out.println("Error saving transaction history"); //fel meddelande om de ej går igenom
             }
-            // BEKRÄFTELSE ANG ÖVERFÖRINGEN (kanske lite mkt system out pritnln men hellre för mkt än för lite tänker jag?
+            // BEKRÄFTELSE ANG ÖVERFÖRINGEN
             System.out.println("Payment successful!");
             System.out.println("New balance: " + balance + " kr");
         } else {
