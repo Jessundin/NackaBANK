@@ -15,6 +15,7 @@ public class Bank {
         this.customers = new ArrayList<>();
     }
 
+    //detta säkerställer att det följer Singleton då det ändast är en bank som används
     public static Bank getInstance() {
         if (instance == null) {
             instance = new Bank();
@@ -121,7 +122,7 @@ public class Bank {
         System.out.println("Customer created for " + name + " with social security number " + ssn);
 
         try {
-            account.writeToFile(name, age, ssn, account.getBalance());
+            account.writeToFile("customers.txt", name, age, ssn, account.getBalance(), null);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

@@ -72,21 +72,26 @@ public class Account implements BankAccountFunctions {
         System.out.println("New balance: " + balance + " kr");
     }
 
-    public void writeToFile(String name, int age, String pnr, double balance) {
-        File file = new File("customers.txt");
+    public void writeToFile(String fileName, String customerName, int customerAge, String socialSecurityNumber, double balance, String recipient) throws IOException {
+        File file = new File(fileName);
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
-            writer.write(name + ", " + age + ", " + pnr + ", " + balance + " kr");
-            writer.newLine();
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            if (fileName.equals("customers.txt")) {
+                writer.write(customerName + ", " + customerAge + ", " + socialSecurityNumber + ", " + balance + " kr");
+                writer.newLine();
+            }
+            if (fileName.equals("Transactions.txt")) {
+                writer.write(customer.getSocialSecurityNumber() + ", Betalning till " + recipient +
+                        ", " + String.format("%.2f", balance) + " kr, " + java.time.LocalDateTime.now());
+                writer.newLine();
+            }
         }
     }
 
     @Override
     public void payBill() {
         Scanner sc = new Scanner(System.in);
+
 
         System.out.println("\n--- Bill Payment ---");
         System.out.println("Enter recipient name: ");
@@ -99,7 +104,7 @@ public class Account implements BankAccountFunctions {
             System.out.println("Amount most be positive ");
             return;
         }
-        if (amount > balance) { // OM de finns pengar på kontot
+        if (amount > balance) { // OM INTE de finns pengar på kontot
             System.out.println("Your balance is too low for this payment");
             System.out.println("Current balance: " + balance + " kr");
             return;
@@ -116,13 +121,8 @@ public class Account implements BankAccountFunctions {
             balance -= amount;
 
             try {
-                File file = new File("Transactions.txt"); //ska vi ha en separat fil för transaktioner?
-                BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
-                String transactions = customer.getSocialSecurityNumber() +
-                        ", Betalning till " + recipient + ", -" +  String.format("%.2f", amount) + " kr, " + java.time.LocalDateTime.now(); // för exakta tiden
-                writer.write(transactions);
-                writer.newLine();
-                writer.close();
+                writeToFile("Transactions.txt", null, 0, null, amount, recipient);
+
             } catch (IOException e) {
                 System.out.println("Error saving transaction history"); //fel meddelande om de ej går igenom
             }
@@ -138,7 +138,7 @@ public class Account implements BankAccountFunctions {
 
     public void logIn() {
         Scanner sc = new Scanner(System.in);
-        System.out.print("Enter person number: ");
+        System.out.print("Enter social security number: ");
         String pnr = sc.next();
 
         try {
@@ -176,7 +176,7 @@ public class Account implements BankAccountFunctions {
             fileScanner.close();
 
             if (!accountFound) {
-                System.out.println("Account not found with person number " + pnr);
+                System.out.println("Account not found with social security number: " + pnr);
             }
         } catch (FileNotFoundException e) {
             System.out.println("Error reading customer file");
@@ -187,10 +187,10 @@ public class Account implements BankAccountFunctions {
         System.out.println("----------------------------------------");
         System.out.println("Choose what you would like to do: ");
         System.out.println("1: Check balance\n" +
-                           "2: Deposit money\n" +
-                           "3: Whitdraw money from account\n" +
-                           "4: Pay bill\n" +
-                           "5: Exit ");
+                "2: Deposit money\n" +
+                "3: Whitdraw money from account\n" +
+                "4: Pay bill\n" +
+                "5: Exit ");
         //Lägga till ett val för att skapa ett subkonto?
     }
 
