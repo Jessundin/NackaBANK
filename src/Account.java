@@ -11,7 +11,8 @@ public class Account implements BankAccountFunctions {
     Customer customer;
     private double balance = 0;
     private double amount = -1;
-
+    private static final String CUSTOMER_TEXT_FILE = "customers.txt";
+    private static final String TRANSACTIONS_TEXT_FILE = "Transactions.txt";
 
     public Account(String socialSecurityNumber, String name, int age) {
         customer = new Customer(socialSecurityNumber, name, age);
@@ -51,7 +52,7 @@ public class Account implements BankAccountFunctions {
         }
         balance += amount;
         try {
-            updateBalanceInFile("customers.txt");
+            updateBalanceInFile(CUSTOMER_TEXT_FILE);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -80,7 +81,7 @@ public class Account implements BankAccountFunctions {
         }
         balance -= amount;
         try {
-            updateBalanceInFile("customers.txt");
+            updateBalanceInFile(CUSTOMER_TEXT_FILE);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -92,11 +93,11 @@ public class Account implements BankAccountFunctions {
         File file = new File(fileName);
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
-            if (fileName.equals("customers.txt")) {
+            if (fileName.equals(CUSTOMER_TEXT_FILE)) {
                 writer.write(customerName + ", " + customerAge + ", " + socialSecurityNumber + ", " + balance + " kr");
                 writer.newLine();
             }
-            if (fileName.equals("Transactions.txt")) {
+            if (fileName.equals(TRANSACTIONS_TEXT_FILE)) {
                 LocalDateTime currentDateAndTime = java.time.LocalDateTime.now();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE dd MMMM yyyy HH:mm");
                 String dateAndTime = currentDateAndTime.format(formatter);
@@ -163,14 +164,14 @@ public class Account implements BankAccountFunctions {
             balance -= amount;
 
             try {
-                writeToFile("Transactions.txt", null, 0, null, amount, recipient);
+                writeToFile(TRANSACTIONS_TEXT_FILE, null, 0, null, amount, recipient);
 
             } catch (IOException e) {
                 System.out.println("Error saving transaction history"); //fel meddelande om de ej går igenom
             }
             // BEKRÄFTELSE ANG ÖVERFÖRINGEN
             try {
-                updateBalanceInFile("customers.txt");
+                updateBalanceInFile(CUSTOMER_TEXT_FILE);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -189,7 +190,7 @@ public class Account implements BankAccountFunctions {
         customer.setSocialSecurityNumber(sc.next());
 
         try {
-            File file = new File("customers.txt"); //öppnar filen me konto
+            File file = new File(CUSTOMER_TEXT_FILE);
             if (!file.exists()) {
                 System.out.println("No accounts found");
                 return;
