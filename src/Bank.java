@@ -1,3 +1,5 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +47,25 @@ public class Bank {
                 System.exit(0);
         }
     }
+    private boolean ifPersonNumberExists(String ssn) {
+        try {
+            File file = new File("customers.txt");
+            Scanner scanner = new Scanner(file);
+
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                if (line.contains(ssn)) {  // Kollar bara om personnumret finns i raden, dvs om en sträng innehåller en annan sträng
+                    scanner.close();
+                    return true;
+                }
+            }
+            scanner.close();
+            return false;
+
+        } catch (FileNotFoundException e) {
+            return false;
+        }
+    }
 
     public void createAccount() {
 
@@ -55,9 +76,17 @@ public class Bank {
 
         int currentYear = LocalDate.now().getYear();
 
+
         while (true) {
             System.out.print("Enter your social security number (10 digits): ");
             ssn = sc.next();
+
+            if (ifPersonNumberExists(ssn)) {
+                System.out.println("An account with this social security number already exists!");
+                welcomePrompt();  // Visa huvudmenyn igen
+                getWelcomeInputChoice();
+                return;  // Avbryter hela metoden här
+            }
 
             if (ssn.length() != 10) {
                 System.out.println("Please enter a valid 10-digit social security number.");
