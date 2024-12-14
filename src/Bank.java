@@ -27,8 +27,8 @@ public class Bank {
         System.out.println("----------------------------------------");
         System.out.println("Welcome to NackaBANK, choose an option: ");
         System.out.println("1. Create account\n" +
-                           "2. Log in\n" +
-                           "0. Exit");
+                "2. Log in\n" +
+                "0. Exit");
     }
 
     public void getWelcomeInputChoice() {
@@ -48,6 +48,7 @@ public class Bank {
                 System.exit(0);
         }
     }
+
     private boolean ifPersonNumberExists(String ssn) {
         try {
             File file = new File("customers.txt");
@@ -74,7 +75,7 @@ public class Bank {
         System.out.print("Enter your name: ");
         String name = sc.next();
         String ssn;
-
+        int age;
         int currentYear = LocalDate.now().getYear();
 
 
@@ -104,7 +105,7 @@ public class Bank {
                 birthYear += 2000;
             }
 
-            int age = currentYear - birthYear;
+            age = currentYear - birthYear;
 
             if (age >= 18) {
                 break;
@@ -113,7 +114,6 @@ public class Bank {
             }
         }
 
-        int age = currentYear - Integer.parseInt(ssn.substring(0, 2));
         Customer customer = new Customer(ssn, name, age);
         Account account = new Account(ssn, name, age);
         customer.addAccount(account);
