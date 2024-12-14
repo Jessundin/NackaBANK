@@ -7,6 +7,7 @@ public class Customer {
     private String name;
     private int age;
 
+
     public Customer(String socialSecurityNumber, String name, int age) {
         this.socialSecurityNumber = socialSecurityNumber;
         this.name = name;
@@ -35,4 +36,15 @@ public class Customer {
         return age;
     }
 
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSocialSecurityNumber(String socialSecurityNumber) {
+        this.socialSecurityNumber = socialSecurityNumber;
+    }
 }

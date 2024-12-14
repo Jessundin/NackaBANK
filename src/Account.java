@@ -1,11 +1,15 @@
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Account implements BankAccountFunctions {
 
+    //Koppla allt till objektet customer
     Customer customer;
     private double balance = 0;
     private double amount = -1;
+
 
     public Account(String socialSecurityNumber, String name, int age) {
         customer = new Customer(socialSecurityNumber, name, age);
@@ -44,6 +48,11 @@ public class Account implements BankAccountFunctions {
             }
         }
         balance += amount;
+        try {
+            updateBalanceInFile("customers.txt");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         System.out.println("New balance: " + balance + " kr");
     }
 
@@ -68,6 +77,11 @@ public class Account implements BankAccountFunctions {
             }
         }
         balance -= amount;
+        try {
+            updateBalanceInFile("customers.txt");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         System.out.println("Successfully withdrew " + amount + " kr");
         System.out.println("New balance: " + balance + " kr");
     }
@@ -83,6 +97,29 @@ public class Account implements BankAccountFunctions {
             if (fileName.equals("Transactions.txt")) {
                 writer.write(customer.getSocialSecurityNumber() + ", Betalning till " + recipient +
                         ", " + String.format("%.2f", balance) + " kr, " + java.time.LocalDateTime.now());
+                writer.newLine();
+            }
+        }
+    }
+
+    public void updateBalanceInFile(String fileName) throws IOException {
+        List<String> lines = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+
+                if (line.contains(customer.getSocialSecurityNumber())) { //om d matchar pnr alltså,
+                    lines.add(customer.getName() + ", " + customer.getAge() + ", " + customer.getSocialSecurityNumber() + ", " + balance + " kr");
+                } else {
+                    lines.add(line);
+                }
+            }
+        }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+            for (String line : lines) {
+                writer.write(line);
                 writer.newLine();
             }
         }
@@ -127,6 +164,11 @@ public class Account implements BankAccountFunctions {
                 System.out.println("Error saving transaction history"); //fel meddelande om de ej går igenom
             }
             // BEKRÄFTELSE ANG ÖVERFÖRINGEN
+            try {
+                updateBalanceInFile("customers.txt");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             System.out.println("Payment successful!");
             System.out.println("New balance: " + balance + " kr");
         } else {
@@ -139,7 +181,7 @@ public class Account implements BankAccountFunctions {
     public void logIn() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter social security number: ");
-        String pnr = sc.next();
+        customer.setSocialSecurityNumber(sc.next());
 
         try {
             File file = new File("customers.txt"); //öppnar filen me konto
@@ -153,15 +195,15 @@ public class Account implements BankAccountFunctions {
 
             while (fileScanner.hasNextLine()) {
                 String line = fileScanner.nextLine();
-                //delar upp raderna så de blir name,age,pnr,balance
+                //delar upp raderna så de blir name,age,socialSecurityNumber,balance
                 String[] parts = line.split(", ");
-                if (parts.length >= 3 && parts[2].equals(pnr)) { //om d matchar pnr alltså,
-                    String name = parts[0]; //hämtar all kontoinfo
-                    int age = Integer.parseInt(parts[1]);
+                if (parts.length >= 3 && parts[2].equals(customer.getSocialSecurityNumber())) { //om d matchar socialSecurityNumber alltså,
+                    customer.setName(parts[0]);
+                    customer.setAge(Integer.parseInt(parts[1]));
                     double balance = Double.parseDouble(parts[3].replace(" kr", ""));
 
                     // Skapar konto och lägg till i listan
-                    Account account = new Account(pnr, name, age);
+                    Account account = new Account(customer.getSocialSecurityNumber(), customer.getName(), customer.getAge());
                     account.setBalance(balance);
                     this.balance = account.balance;
 
@@ -176,7 +218,7 @@ public class Account implements BankAccountFunctions {
             fileScanner.close();
 
             if (!accountFound) {
-                System.out.println("Account not found with social security number: " + pnr);
+                System.out.println("Account not found with social security number: " + customer.getSocialSecurityNumber());
             }
         } catch (FileNotFoundException e) {
             System.out.println("Error reading customer file");
