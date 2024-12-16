@@ -37,6 +37,7 @@ public class AccountManagement implements BankAccountFunctions {
 
             if (sc.hasNextDouble()) {
                 amount = sc.nextDouble();
+                sc.nextLine();
 
                 if (amount <= 0) {
                     System.out.println("Amount must be positive. Please try again.");
@@ -53,6 +54,7 @@ public class AccountManagement implements BankAccountFunctions {
             throw new RuntimeException(e);
         }
         System.out.println("New balance: " + balance + " kr");
+        amount = -1;
     }
 
     @Override
@@ -63,6 +65,7 @@ public class AccountManagement implements BankAccountFunctions {
 
             if (sc.hasNextDouble()) {
                 amount = sc.nextDouble();
+                sc.nextLine();
 
                 if (amount <= 0) {
                     System.out.println("Amount must be positive. Please try again.");
@@ -82,6 +85,7 @@ public class AccountManagement implements BankAccountFunctions {
         }
         System.out.println("Successfully withdrew " + amount + " kr");
         System.out.println("New balance: " + balance + " kr");
+        amount = -1;
     }
 
     @Override
@@ -128,9 +132,11 @@ public class AccountManagement implements BankAccountFunctions {
 
             System.out.println("Payment successful!");
             System.out.println("New balance: " + balance + " kr");
+            
         } else {
             System.out.println("Payment cancelled");
         }
+
     }
 
     public void setBalance(double balance) {
