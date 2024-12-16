@@ -5,7 +5,7 @@ public interface BankAccountFunctions {
 
     void withdraw();
 
-    double getBalance();
+    double checkBalance(Customer customer);
 
     void payBill();
 

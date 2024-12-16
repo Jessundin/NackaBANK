@@ -3,6 +3,7 @@ import java.util.*;
 public class Customer {
 
     private final List<Account> accounts;
+    private List<Customer> customers = new ArrayList<>();
     private String socialSecurityNumber;
     private String name;
     private int age;
@@ -15,11 +16,6 @@ public class Customer {
         this.accounts = new ArrayList<>();
     }
 
-    public Customer() {
-        this.accounts = new ArrayList<>();
-    }
-
-    //Behövde flytta hit denna metod från Account för att kunna få den att koppla på rätt sätt
     public void addAccount(Account account) {
         this.accounts.add(account);
     }
@@ -30,6 +26,10 @@ public class Customer {
 
     public String getName() {
         return name;
+    }
+
+    public List<Customer> getCustomers() {
+        return customers;
     }
 
     public int getAge() {
