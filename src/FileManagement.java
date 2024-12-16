@@ -64,7 +64,7 @@ public class FileManagement {
 
     public boolean ifPersonNumberExists(String ssn) {
         try {
-            File file = new File("customers.txt");
+            File file = new File(CUSTOMER_TEXT_FILE);
             Scanner scanner = new Scanner(file);
 
             while (scanner.hasNextLine()) {

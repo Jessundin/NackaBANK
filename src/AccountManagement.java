@@ -5,6 +5,7 @@ public class AccountManagement implements BankAccountFunctions {
 
     private Customer customer;
     FileManagement fileManagement;
+    Scanner sc = new Scanner(System.in);
 
     private double balance = 0;
     private double amount = -1;
@@ -30,8 +31,6 @@ public class AccountManagement implements BankAccountFunctions {
 
     @Override
     public void deposit() {
-        amount = -1;
-        Scanner sc = new Scanner(System.in);
 
         while (amount <= 0) {
             System.out.print("Enter amount to deposit: ");
@@ -58,8 +57,6 @@ public class AccountManagement implements BankAccountFunctions {
 
     @Override
     public void withdraw() {
-        Scanner sc = new Scanner(System.in);
-        double amount = -1;
 
         while (amount <= 0 || amount > balance) {
             System.out.print("Enter amount to withdraw: ");
@@ -89,8 +86,6 @@ public class AccountManagement implements BankAccountFunctions {
 
     @Override
     public void payBill() {
-        Scanner sc = new Scanner(System.in);
-
 
         System.out.println("\n--- Bill Payment ---");
         System.out.println("Enter recipient name: ");

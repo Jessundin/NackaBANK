@@ -5,8 +5,4 @@ public class Account {
     public Account(String socialSecurityNumber, String name, int age) {
         customer = new Customer(socialSecurityNumber, name, age);
     }
-
-    public Customer getCustomer() {
-        return customer;
-    }
 }

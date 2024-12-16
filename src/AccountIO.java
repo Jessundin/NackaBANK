@@ -5,11 +5,12 @@ import java.util.Scanner;
 
 public class AccountIO {
 
+    private static final String CUSTOMER_TEXT_FILE = "customers.txt";
+    Scanner sc = new Scanner(System.in);
     Customer customer;
     BankIO bankIO;
     AccountManagement accountManagement;
     FileManagement fileManagement;
-    private static final String CUSTOMER_TEXT_FILE = "customers.txt";
 
     public void accountPrompt() {
         System.out.println("----------------------------------------");
@@ -22,40 +23,32 @@ public class AccountIO {
     }
 
     public void getAccountInputChoice() {
-        Scanner sc = new Scanner(System.in);
         int choice = sc.nextInt();
 
         switch (choice) {
             case 1:
                 accountManagement.checkBalance(customer);
-                accountPrompt();
-                getAccountInputChoice();
                 break;
             case 2:
                 accountManagement.deposit();
-                accountPrompt();
-                getAccountInputChoice();
                 break;
 
             case 3:
                 accountManagement.withdraw();
-                accountPrompt();
-                getAccountInputChoice();
                 break;
             case 4:
                 accountManagement.payBill();
-                accountPrompt();
-                getAccountInputChoice();
                 break;
             case 5:
                 System.out.println("Goodbye!");
                 System.exit(0);
 
         }
+        accountPrompt();
+        getAccountInputChoice();
     }
 
     public void logIn() {
-        Scanner sc = new Scanner(System.in);
 
         if (customer == null) {
             customer = new Customer("", "", 0);
@@ -105,8 +98,6 @@ public class AccountIO {
     }
 
     public void createAccount() {
-
-        Scanner sc = new Scanner(System.in);
         System.out.print("Enter your name: ");
         String name = sc.next();
         String ssn;
