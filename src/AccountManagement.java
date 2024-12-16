@@ -12,6 +12,7 @@ public class AccountManagement implements BankAccountFunctions {
     private static final String CUSTOMER_TEXT_FILE = "customers.txt";
     private static final String TRANSACTIONS_TEXT_FILE = "Transactions.txt";
 
+
     public AccountManagement(Customer customer) {
         this.customer = customer;
         this.fileManagement = new FileManagement(customer);
@@ -95,6 +96,9 @@ public class AccountManagement implements BankAccountFunctions {
         System.out.println("Enter recipient name: ");
         String recipient = sc.nextLine();
 
+        System.out.println("Enter OCR number: ");
+        String ocrNumber = sc.nextLine();
+
         System.out.print("Enter bill amount: ");
         double amount = sc.nextDouble();
 
@@ -110,6 +114,7 @@ public class AccountManagement implements BankAccountFunctions {
         System.out.println("\nPayment Details: ");
         System.out.println("Recipient: " + recipient);
         System.out.println("Amount: " + amount + "kr");
+        System.out.println("OCR number: " + ocrNumber);
         System.out.println("CONFIRM PAYMENT YES/NO:");
         sc.nextLine();
         String confirm = sc.nextLine();
@@ -118,7 +123,7 @@ public class AccountManagement implements BankAccountFunctions {
             balance -= amount;
 
             try {
-                fileManagement.writeToFile(TRANSACTIONS_TEXT_FILE, null, 0, null, amount, recipient, customer);
+                fileManagement.writeToFile(TRANSACTIONS_TEXT_FILE, null, 0, null, amount, recipient, customer, ocrNumber);
 
             } catch (IOException e) {
                 System.out.println("Error saving transaction history");
@@ -132,7 +137,7 @@ public class AccountManagement implements BankAccountFunctions {
 
             System.out.println("Payment successful!");
             System.out.println("New balance: " + balance + " kr");
-            
+
         } else {
             System.out.println("Payment cancelled");
         }

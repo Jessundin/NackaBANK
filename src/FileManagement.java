@@ -20,7 +20,7 @@ public class FileManagement {
         this.accountManagement = accountManagement;
     }
 
-    public void writeToFile(String fileName, String customerName, int customerAge, String socialSecurityNumber, double balance, String recipient, Customer customer) throws IOException {
+    public void writeToFile(String fileName, String customerName, int customerAge, String socialSecurityNumber, double balance, String recipient, Customer customer, String ocrNumber) throws IOException {
         File file = new File(fileName);
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
@@ -32,8 +32,8 @@ public class FileManagement {
                 LocalDateTime currentDateAndTime = java.time.LocalDateTime.now();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE dd MMMM yyyy HH:mm");
                 String dateAndTime = currentDateAndTime.format(formatter);
-                writer.write(customer.getSocialSecurityNumber() + ", Betalning till " + recipient +
-                             ", " + String.format("%.2f", balance) + " kr, " + dateAndTime);
+                writer.write(customer.getSocialSecurityNumber() + ", Payment to: " + recipient +
+                        ", " + "OCR: " + ocrNumber + ", Amount: " + String.format("%.2f", balance) + " kr, " + dateAndTime);
                 writer.newLine();
             }
         }

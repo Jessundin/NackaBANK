@@ -16,10 +16,10 @@ public class AccountIO {
         System.out.println("----------------------------------------");
         System.out.println("Choose what you would like to do: ");
         System.out.println("1: Check balance\n" +
-                           "2: Deposit money\n" +
-                           "3: Whitdraw money from account\n" +
-                           "4: Pay bill\n" +
-                           "5: Exit ");
+                "2: Deposit money\n" +
+                "3: Whitdraw money from account\n" +
+                "4: Pay bill\n" +
+                "5: Exit ");
     }
 
     public void getAccountInputChoice() {
@@ -148,7 +148,7 @@ public class AccountIO {
         System.out.println("Customer created for " + name + " with social security number " + ssn);
 
         try {
-            fileManagement.writeToFile("customers.txt", customer.getName(), customer.getAge(), customer.getSocialSecurityNumber(), accountManagement.checkBalance(customer), null, customer);
+            fileManagement.writeToFile("customers.txt", customer.getName(), customer.getAge(), customer.getSocialSecurityNumber(), accountManagement.checkBalance(customer), null, customer, null);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
