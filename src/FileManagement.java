@@ -62,14 +62,14 @@ public class FileManagement {
         }
     }
 
-    public boolean ifPersonNumberExists(String ssn) {
+    public boolean ifSocialSecurityNumberExists(String socialSecurityNumber) {
         try {
             File file = new File(CUSTOMER_TEXT_FILE);
             Scanner scanner = new Scanner(file);
 
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
-                if (line.contains(ssn)) {
+                if (line.contains(socialSecurityNumber)) {
                     scanner.close();
                     return true;
                 }
