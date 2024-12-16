@@ -34,6 +34,7 @@ public class Account implements BankAccountFunctions {
     }
 
     public void deposit() {
+        amount = -1;
         Scanner sc = new Scanner(System.in);
 
         while (amount <= 0) {
