@@ -9,8 +9,8 @@ public class AccountIO {
     Scanner sc = new Scanner(System.in);
     Customer customer;
     BankIO bankIO;
-    AccountManagement accountManagement;
-    FileManagement fileManagement;
+    AccountManagement accountManagement = new AccountManagement(customer);
+    FileManagement fileManagement = new FileManagement(customer);
 
     public void accountPrompt() {
         System.out.println("----------------------------------------");
@@ -81,6 +81,7 @@ public class AccountIO {
 
                     System.out.println("Successfully logged in!");
                     accountFound = true;
+
                     accountPrompt();
                     handleAccountInputChoice();
 
@@ -154,57 +155,4 @@ public class AccountIO {
             throw new RuntimeException(e);
         }
     }
-
-    /*
-    public String setNamePrompt() {
-
-        System.out.println("Enter your name: ");
-        return sc.nextLine();
-    }
-
-    public String setSocialSecurityNumberPrompt() {
-        String socialSecurityNumber;
-        while (true) {
-            System.out.print("Enter your social security number (10 digits): ");
-            socialSecurityNumber = sc.next();
-            bankIO = new BankIO();
-
-            if (fileManagement.ifSocialSecurityNumberExists(socialSecurityNumber)) {
-                System.out.println("An account with this social security number already exists!");
-                bankIO.welcomePrompt();
-                bankIO.getWelcomeInputChoice();
-                return null;
-            }
-
-            if (socialSecurityNumber.length() != 10) {
-                System.out.println("Please enter a valid 10-digit social security number.");
-                continue;
-            }
-            return socialSecurityNumber;
-        }
-    }
-
-    public int setAgePrompt(String socialSecurityNumber) {
-        int currentYear = LocalDate.now().getYear();
-        String firstTwoDigits = socialSecurityNumber.substring(0, 2);
-        int birthYear = Integer.parseInt(firstTwoDigits);
-
-        if (birthYear > currentYear % 100) {
-            birthYear += 1900;
-        } else {
-            birthYear += 2000;
-        }
-        return currentYear - birthYear;
-    }
-
-    public boolean checkIfCustomerIsOldEnough(int age){
-        if (age >= 18){
-            return true;
-        } else {
-            System.out.println("You must be at least 18 years old to create an account!\n");
-        }
-        return false;
-    }
-
-     */
 }

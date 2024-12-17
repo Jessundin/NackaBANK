@@ -103,7 +103,7 @@ public class AccountManagement implements BankAccountFunctions {
         double amount = sc.nextDouble();
 
         if (amount <= 0) {
-            System.out.println("Amount most be positive ");
+            System.out.println("Amount must be positive ");
             return;
         }
         if (amount > balance) { // OM INTE de finns pengar på kontot

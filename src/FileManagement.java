@@ -47,7 +47,7 @@ public class FileManagement {
             while ((line = reader.readLine()) != null) {
 
                 if (line.contains(this.customer.getSocialSecurityNumber())) { //om d matchar pnr alltså,
-                    lines.add(customer.getName() + ", " + customer.getAge() + ", " + customer.getSocialSecurityNumber() + ", " + accountManagement.checkBalance(customer) + " kr");
+                    lines.add(customer.getName() + ", " + customer.getAge() + ", " + customer.getSocialSecurityNumber() + ", ");
                 } else {
                     lines.add(line);
                 }
