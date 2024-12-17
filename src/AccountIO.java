@@ -22,7 +22,7 @@ public class AccountIO {
                 "5: Exit ");
     }
 
-    public void getAccountInputChoice() {
+    public void handleAccountInputChoice() {
         int choice = sc.nextInt();
 
         switch (choice) {
@@ -45,7 +45,7 @@ public class AccountIO {
 
         }
         accountPrompt();
-        getAccountInputChoice();
+        handleAccountInputChoice();
     }
 
     public void logIn() {
@@ -82,7 +82,7 @@ public class AccountIO {
                     System.out.println("Successfully logged in!");
                     accountFound = true;
                     accountPrompt();
-                    getAccountInputChoice();
+                    handleAccountInputChoice();
 
                     break;
                 }
